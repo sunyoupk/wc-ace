@@ -11,17 +11,30 @@
  *
  * @package wc_ace\includes
  */
-class WC_Ace_Posttypes {
+class WC_Ace_Post_Types {
 
 	/**
 	 * Init post types
 	 */
 	public static function init() {
-		add_action( 'init', array( __CLASS__, 'register_taxonomies' ), 5 );
+		self::register_support_posttypes();
 		add_action( 'init', array( __CLASS__, 'register_post_types' ), 5 );
-		add_action( 'init', array( __CLASS__, 'register_post_status' ), 9 );
-		add_action( 'wc_ace_after_register_post_type', array( __CLASS__, 'maybe_flush_rewrite_rules' ) );
-		add_action( 'wc_ace_flush_rewrite_rules', array( __CLASS__, 'flush_rewrite_rules' ) );
+//		add_action( 'init', array( __CLASS__, 'register_taxonomies' ), 5 );
+//		add_action( 'init', array( __CLASS__, 'register_post_status' ), 9 );
+//		add_action( 'wc_ace_after_register_post_type', array( __CLASS__, 'maybe_flush_rewrite_rules' ) );
+//		add_action( 'wc_ace_flush_rewrite_rules', array( __CLASS__, 'flush_rewrite_rules' ) );
+	}
+
+	/**
+	 * Support posttype file load.
+	 */
+	public static function register_support_posttypes() {
+		$include_base_path = untrailingslashit( plugin_dir_path( WC_ACE_PLUGIN_FILE ) ) . '/includes/';
+		foreach ( glob( $include_base_path . 'supports/class-wc-ace-posttype-*.php' ) as $filename ) {
+			if ( file_exists( $filename ) ) {
+				require_once $filename;
+			}
+		}
 	}
 
 	/**
@@ -33,8 +46,7 @@ class WC_Ace_Posttypes {
 		}
 
 		// Support custom post types.
-		error_log( 'core register_post_type' );
-		do_action( 'wc_ace_support_post_type' );
+		do_action( 'wc_ace_register_support_post_type' );
 	}
 
 	/**
@@ -72,4 +84,4 @@ class WC_Ace_Posttypes {
 
 }
 //
-//WC_Ace_Posttypes::init();
+WC_Ace_Post_Types::init();

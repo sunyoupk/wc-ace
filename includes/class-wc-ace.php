@@ -75,7 +75,7 @@ final class WC_Ace {
 		 */
 //		include_once WC_ACE_ABSPATH . 'includes/wc-core-functions.php';
 //		include_once WC_ACE_ABSPATH . 'includes/class-wc-datetime.php';
-//		include_once WC_ACE_ABSPATH . 'includes/class-wc-post-types.php';
+		include_once WC_ACE_ABSPATH . 'includes/class-wc-ace-post-types.php';
 		include_once WC_ACE_ABSPATH . 'includes/class-wc-ace-install.php';
 
 //		if ( $this->is_request( 'admin' ) ) {

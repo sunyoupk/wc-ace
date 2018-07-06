@@ -79,6 +79,8 @@ class WC_Ace_Autoloader {
 			$path = $this->include_path . 'admin/meta-boxes/';
 		} elseif ( 0 === strpos( $class, 'wc_ace_admin' ) ) {
 			$path = $this->include_path . 'admin/';
+//		} elseif ( 0 === strpos( $class, 'wc_ace_posttype_' ) ) {
+//			$path = $this->include_path . 'posttype/';
 		}
 
 		if ( empty( $path ) || ! $this->load_file( $path . $file ) ) {

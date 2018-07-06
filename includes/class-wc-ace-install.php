@@ -47,8 +47,8 @@ class WC_Ace_Install {
 	 * Setup custom post type.
 	 */
 	private static function prepare_post_types() {
-		WC_Ace_Posttypes::register_post_types();
-		WC_Ace_Posttypes::register_taxonomies();
+		WC_Ace_Post_Types::register_post_types();
+		WC_Ace_Post_Types::register_taxonomies();
 //		ace()->query->init_query_vars();
 	}
 
