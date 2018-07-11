@@ -18,7 +18,7 @@ class WC_Ace_Post_Type_Community {
 	 */
 	public static function init() {
 		add_action( 'wc_ace_register_support_post_type', array( __CLASS__, 'register_post_type' ), 10 );
-		add_action( 'wc_ace_register_support_post_type', array( __CLASS__, 'register_taxonomies' ), 20 );
+		add_action( 'wc_ace_register_support_taxonomies', array( __CLASS__, 'register_taxonomies' ), 20 );
 
 		self::revoke_role();
 		self::grant_role();
@@ -83,6 +83,9 @@ class WC_Ace_Post_Type_Community {
 		);
 	}
 
+	/**
+	 * Register taxonomies
+	 */
 	public static function register_taxonomies() {
 
 		if ( ! is_blog_installed() ) {
@@ -128,9 +131,9 @@ class WC_Ace_Post_Type_Community {
 			'community_tag',
 			array( 'community' ),
 			array(
-				'hierarchical'          => false,
-				'label'                 => __( '태그', 'wc-ace' ),
-				'labels'                => array(
+				'hierarchical' => false,
+				'label'        => __( '태그', 'wc-ace' ),
+				'labels'       => array(
 					'name'                       => __( '커뮤니티 태그', 'wc-ace' ),
 					'singular_name'              => __( '태그', 'wc-ace' ),
 					'menu_name'                  => _x( '태그', 'Admin menu name', 'wc-ace' ),
@@ -146,9 +149,9 @@ class WC_Ace_Post_Type_Community {
 					'choose_from_most_used'      => __( '인기 태그 중에서 선', 'wc-ace' ),
 					'not_found'                  => __( '태그를 찾을 수 없습니다.', 'wc-ace' ),
 				),
-				'show_ui'               => true,
-				'query_var'             => true,
-				'capabilities'          => array(
+				'show_ui'      => true,
+				'query_var'    => true,
+				'capabilities' => array(
 					'manage_terms' => 'manage_community_terms',
 					'edit_terms'   => 'edit_community_terms',
 					'delete_terms' => 'delete_community_terms',
@@ -156,114 +159,6 @@ class WC_Ace_Post_Type_Community {
 				),
 			)
 		);
-
-		register_taxonomy(
-			'product_shipping_class',
-			apply_filters( 'woocommerce_taxonomy_objects_product_shipping_class', array(
-				'product',
-				'product_variation'
-			) ),
-			apply_filters(
-				'woocommerce_taxonomy_args_product_shipping_class', array(
-					'hierarchical'          => false,
-					'update_count_callback' => '_update_post_term_count',
-					'label'                 => __( 'Shipping classes', 'woocommerce' ),
-					'labels'                => array(
-						'name'              => __( 'Product shipping classes', 'woocommerce' ),
-						'singular_name'     => __( 'Shipping class', 'woocommerce' ),
-						'menu_name'         => _x( 'Shipping classes', 'Admin menu name', 'woocommerce' ),
-						'search_items'      => __( 'Search shipping classes', 'woocommerce' ),
-						'all_items'         => __( 'All shipping classes', 'woocommerce' ),
-						'parent_item'       => __( 'Parent shipping class', 'woocommerce' ),
-						'parent_item_colon' => __( 'Parent shipping class:', 'woocommerce' ),
-						'edit_item'         => __( 'Edit shipping class', 'woocommerce' ),
-						'update_item'       => __( 'Update shipping class', 'woocommerce' ),
-						'add_new_item'      => __( 'Add new shipping class', 'woocommerce' ),
-						'new_item_name'     => __( 'New shipping class Name', 'woocommerce' ),
-					),
-					'show_ui'               => false,
-					'show_in_quick_edit'    => false,
-					'show_in_nav_menus'     => false,
-					'query_var'             => is_admin(),
-					'capabilities'          => array(
-						'manage_terms' => 'manage_product_terms',
-						'edit_terms'   => 'edit_product_terms',
-						'delete_terms' => 'delete_product_terms',
-						'assign_terms' => 'assign_product_terms',
-					),
-					'rewrite'               => false,
-				)
-			)
-		);
-
-		global $wc_product_attributes;
-
-		$wc_product_attributes = array();
-		$attribute_taxonomies  = wc_get_attribute_taxonomies();
-
-		if ( $attribute_taxonomies ) {
-			foreach ( $attribute_taxonomies as $tax ) {
-				$name = wc_attribute_taxonomy_name( $tax->attribute_name );
-
-				if ( $name ) {
-					$tax->attribute_public          = absint( isset( $tax->attribute_public ) ? $tax->attribute_public : 1 );
-					$label                          = ! empty( $tax->attribute_label ) ? $tax->attribute_label : $tax->attribute_name;
-					$wc_product_attributes[ $name ] = $tax;
-					$taxonomy_data                  = array(
-						'hierarchical'          => false,
-						'update_count_callback' => '_update_post_term_count',
-						'labels'                => array(
-							/* translators: %s: attribute name */
-							'name'              => sprintf( _x( 'Product %s', 'Product Attribute', 'woocommerce' ), $label ),
-							'singular_name'     => $label,
-							/* translators: %s: attribute name */
-							'search_items'      => sprintf( __( 'Search %s', 'woocommerce' ), $label ),
-							/* translators: %s: attribute name */
-							'all_items'         => sprintf( __( 'All %s', 'woocommerce' ), $label ),
-							/* translators: %s: attribute name */
-							'parent_item'       => sprintf( __( 'Parent %s', 'woocommerce' ), $label ),
-							/* translators: %s: attribute name */
-							'parent_item_colon' => sprintf( __( 'Parent %s:', 'woocommerce' ), $label ),
-							/* translators: %s: attribute name */
-							'edit_item'         => sprintf( __( 'Edit %s', 'woocommerce' ), $label ),
-							/* translators: %s: attribute name */
-							'update_item'       => sprintf( __( 'Update %s', 'woocommerce' ), $label ),
-							/* translators: %s: attribute name */
-							'add_new_item'      => sprintf( __( 'Add new %s', 'woocommerce' ), $label ),
-							/* translators: %s: attribute name */
-							'new_item_name'     => sprintf( __( 'New %s', 'woocommerce' ), $label ),
-							/* translators: %s: attribute name */
-							'not_found'         => sprintf( __( 'No &quot;%s&quot; found', 'woocommerce' ), $label ),
-						),
-						'show_ui'               => true,
-						'show_in_quick_edit'    => false,
-						'show_in_menu'          => false,
-						'meta_box_cb'           => false,
-						'query_var'             => 1 === $tax->attribute_public,
-						'rewrite'               => false,
-						'sort'                  => false,
-						'public'                => 1 === $tax->attribute_public,
-						'show_in_nav_menus'     => 1 === $tax->attribute_public && apply_filters( 'woocommerce_attribute_show_in_nav_menus', false, $name ),
-						'capabilities'          => array(
-							'manage_terms' => 'manage_product_terms',
-							'edit_terms'   => 'edit_product_terms',
-							'delete_terms' => 'delete_product_terms',
-							'assign_terms' => 'assign_product_terms',
-						),
-					);
-
-					if ( 1 === $tax->attribute_public && sanitize_title( $tax->attribute_name ) ) {
-						$taxonomy_data['rewrite'] = array(
-							'slug'         => trailingslashit( $permalinks['attribute_rewrite_slug'] ) . sanitize_title( $tax->attribute_name ),
-							'with_front'   => false,
-							'hierarchical' => true,
-						);
-					}
-
-					register_taxonomy( $name, apply_filters( "woocommerce_taxonomy_objects_{$name}", array( 'product' ) ), apply_filters( "woocommerce_taxonomy_args_{$name}", $taxonomy_data ) );
-				}
-			}
-		}
 
 	}
 
@@ -315,6 +210,11 @@ class WC_Ace_Post_Type_Community {
 		}
 	}
 
+	/**
+	 * Capabilities
+	 *
+	 * @return array
+	 */
 	private static function get_core_capabilities() {
 		$capabilities = array();
 
