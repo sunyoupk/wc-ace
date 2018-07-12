@@ -14,11 +14,11 @@ add_filter( 'wc_ace_screen_ids', 'wc_ace_musicsource_get_screen_ids' );
 /**
  * Get Musicsource Admin pages.
  *
- * @param $screen_ids
+ * @param array $screen_ids
  *
- * @return mixed
+ * @return array
  */
-function wc_ace_musicsource_get_screen_ids( $screen_ids ) {
+function wc_ace_musicsource_get_screen_ids( $screen_ids = array() ) {
 	$musicsource_admin_pages = array(
 		'edit-musicsource',
 		'musicsource',
@@ -27,10 +27,6 @@ function wc_ace_musicsource_get_screen_ids( $screen_ids ) {
 		'edit-musicsource_license',
 		'edit-musicsource_tag',
 	);
-
-	if ( ! is_array( $screen_ids ) ) {
-		$screen_ids = array();
-	}
 
 	foreach ( $musicsource_admin_pages as $page ) {
 		$screen_ids[] = $page;

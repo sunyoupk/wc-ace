@@ -23,13 +23,21 @@ class WC_Ace_Admin_Assets {
 	public function __construct() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_styles' ) );
 //		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
+
+		$this->include_assets();
+	}
+
+	/**
+	 * Enqueue custom post type assets.
+	 */
+	private function include_assets() {
+		include_once WC_ACE_ABSPATH . 'includes/admin/class-wc-ace-admin-musicsource-assets.php';
 	}
 
 	/**
 	 * Define admin styles.
 	 */
 	public function admin_styles() {
-
 		global $wp_scripts;
 
 		$screen    = get_current_screen();

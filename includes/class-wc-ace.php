@@ -140,4 +140,13 @@ final class WC_Ace {
 		load_textdomain( 'wc-ace', WP_LANG_DIR . '/wc-ace/' . $locale . '.mo' );
 		load_plugin_textdomain( 'wc-ace', false, plugin_basename( dirname( WC_ACE_PLUGIN_FILE ) ) . '/languages' );
 	}
+
+	/**
+	 * Get the plugin url.
+	 *
+	 * @return string
+	 */
+	public function plugin_url() {
+		return untrailingslashit( plugins_url( '/', WC_ACE_PLUGIN_FILE ) );
+	}
 }

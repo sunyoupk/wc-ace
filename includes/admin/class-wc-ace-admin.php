@@ -29,6 +29,7 @@ class WC_Ace_Admin {
 	 */
 	public function includes() {
 		include_once dirname( __FILE__ ) . '/wc-ace-admin-functions.php';
+		include_once dirname( __FILE__ ) . '/class-wc-ace-admin-post-types.php';
 		include_once dirname( __FILE__ ) . '/class-wc-ace-admin-assets.php';
 	}
 
