@@ -29,3 +29,11 @@ function wc_ace_get_screen_ids() {
 
 	return apply_filters( 'wc_ace_screen_ids', $screen_ids );
 }
+
+/**
+ * Get avaliable post types.
+ * @return array
+ */
+function wc_ace_get_availiable_post_types() {
+	return array( 'musicsource' );
+}

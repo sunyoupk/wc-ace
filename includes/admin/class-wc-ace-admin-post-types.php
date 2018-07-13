@@ -19,7 +19,8 @@ class WC_Ace_Admin_Post_Types {
 	 * WC_Ace_Admin_Post_Types constructor.
 	 */
 	public function __construct() {
-		include_once dirname( __FILE__ ) . '/class-wc-ace-admin-musicsource-meta-boxes.php';
+		include_once dirname( __FILE__ ) . '/class-wc-ace-admin-meta-boxes.php';
+		include_once dirname( __FILE__ ) . '/class-wc-ace-admin-post-type-musicsource.php';
 	}
 }
 

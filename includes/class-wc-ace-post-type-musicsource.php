@@ -32,7 +32,7 @@ class WC_Ace_Post_Type_Musicsource {
 			return;
 		}
 
-		$supports    = array( 'title', 'editor', 'thumbnail', 'comments' );
+		$supports    = array( 'thumbnail', 'comments' );
 		$has_archive = false;
 
 		register_post_type(
@@ -259,6 +259,7 @@ class WC_Ace_Post_Type_Musicsource {
 					'not_found'         => __( '라이선스를 찾을 수 없습니다.', 'wc-ace' ),
 				),
 				'show_ui'      => true,
+				'meta_box_cb'  => false,
 				'query_var'    => true,
 				'capabilities' => array(
 					'manage_terms' => 'manage_musicsource_terms',
