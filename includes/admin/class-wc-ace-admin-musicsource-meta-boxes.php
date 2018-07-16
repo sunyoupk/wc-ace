@@ -31,7 +31,7 @@ class WC_Ace_Admin_Musicsource_Meta_Boxes {
 		$screen_id = $screen ? $screen->id : '';
 
 		add_meta_box( 'wc-ace-musicsource-data', __( '음원 정보', 'wc-ace' ), 'WC_Ace_Meta_Box_Musicsource::output_data', 'musicsource', 'normal', 'high' );
-		add_meta_box( 'wc-ace-musicsource-actions', __( '음원 상태', 'wc-ace' ), 'WC_Ace_Meta_Box_Musicsource::output_action', 'musicsource', 'side', 'high' );
+//		add_meta_box( 'wc-ace-musicsource-actions', __( '음원 상태', 'wc-ace' ), 'WC_Ace_Meta_Box_Musicsource::output_action', 'musicsource', 'side', 'high' );
 
 		add_meta_box( 'wc-ace-musicsource-licenses', __( '음원 라이선스', 'wc-ace' ), 'WC_Ace_Meta_Box_Musicsource::output_license', 'musicsource', 'normal', 'high' );
 		add_meta_box( 'wc-ace-musicsource-files', __( '음원 파일', 'wc-ace' ), 'WC_Ace_Meta_Box_Musicsource::output_files', 'musicsource', 'normal', 'high' );

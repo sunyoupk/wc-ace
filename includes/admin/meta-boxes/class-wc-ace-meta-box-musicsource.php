@@ -20,24 +20,37 @@ class WC_Ace_Meta_Box_Musicsource {
 	 */
 	public static function output_data() {
 		?>
-
-		<div class="panel-wrap woocommerce">
-
-			<div id="order_data" class="panel woocommerce-order-data">
-				<h2 class="woocommerce-order-data__heading">제목: </h2>
-
+        <div class="panel-wrap woocommerce">
+            <div id="order_data" class="panel woocommerce-order-data">
                 <div class="order_data_column_container">
                     <div class="order_data_column">
                         <h3>음원 정보</h3>
                         <p class="form-field form-field-wide">
+                            <label for="order_date">제목:</label>
+                            <input type="text" class="" name="order_date" maxlength="10" value=""/>
+                        </p>
+                        <p class="form-field form-field-wide">
                             <label for="order_date">아티스트:</label>
-                            <input type="text" class="date-picker" name="order_date" maxlength="10" value="" />
+                            <input type="text" class="" name="order_date" maxlength="10" value=""/>
+                        </p>
+                    </div>
+                    <div class="order_data_column">
+                        <h3>장르</h3>
+                        <p class="form-field form-field-wide">
+                            <label for="order_date">장르선택:</label>
+                            <input type="text" class="" name="order_date" maxlength="10" value=""/>
+                        </p>
+                    </div>
+                    <div class="order_data_column">
+                        <h3>라이선스</h3>
+                        <p class="form-field form-field-wide">
+                            <label for="order_date">Premium:</label>
+                            <input type="text" class="" name="order_date" maxlength="10" value=""/>
                         </p>
                     </div>
                 </div>
-			</div>
-		</div>
-
+            </div>
+        </div>
 		<?php
 	}
 
