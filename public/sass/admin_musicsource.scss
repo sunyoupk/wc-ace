@@ -1,0 +1,199 @@
+/**
+ * Musicsource admin styles.
+ */
+
+#wc-ace-musicsource-data .handlediv, #wc-ace-musicsource-data .hndle {
+  display: none;
+}
+
+#musicsource_data {
+  padding: 23px 24px 12px;
+
+  h2 {
+    margin: 0;
+    font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', sans-serif;
+    font-size: 21px;
+    font-weight: normal;
+    line-height: 1.2;
+    text-shadow: 1px 1px 1px white;
+    padding: 0;
+  }
+
+  h3 {
+    font-size: 14px;
+  }
+
+  h3, h4 {
+    color: #333;
+    margin: 1.33em 0 0;
+  }
+
+  p {
+    color: #777;
+  }
+
+  p.order_number {
+    margin: 0;
+    font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', sans-serif;
+    font-weight: normal;
+    line-height: 1.6em;
+    font-size: 16px;
+  }
+
+  .musicsource_data_column_container {
+    clear: both;
+  }
+
+  .musicsource_data_column {
+    width: 32%;
+    padding: 0 2% 0 0;
+    float: left;
+
+    > h3 span {
+      display: block;
+    }
+
+    &:last-child {
+      padding-right: 0;
+    }
+
+    p {
+      padding: 0 !important;
+    }
+
+    .address strong {
+      display: block;
+    }
+
+    .form-field {
+      float: left;
+      clear: left;
+      width: 48%;
+      padding: 0;
+      margin: 9px 0 0;
+
+      label {
+        display: block;
+        padding: 0 0 3px;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+      }
+
+      select {
+        width: 100%;
+      }
+
+      .select2-container {
+        width: 100% !important;
+      }
+
+      .date-picker {
+        width: 50%;
+      }
+
+      .hour,
+      .minute {
+        width: 3.5em;
+      }
+
+      small {
+        display: block;
+        margin: 5px 0 0;
+        color: #999;
+      }
+    }
+
+    .form-field.last,
+    ._billing_last_name_field,
+    ._billing_address_2_field,
+    ._billing_postcode_field,
+    ._billing_state_field,
+    ._billing_phone_field,
+    ._shipping_last_name_field,
+    ._shipping_address_2_field,
+    ._shipping_postcode_field,
+    ._shipping_state_field {
+      float: right;
+      clear: right;
+    }
+
+    .form-field-wide,
+    ._billing_company_field,
+    ._shipping_company_field,
+    ._transaction_id_field {
+      width: 100%;
+      clear: both;
+
+      input,
+      textarea,
+      select,
+      .wc-enhanced-select,
+      .wc-category-search,
+      .wc-customer-search {
+        width: 100%;
+      }
+    }
+
+    p.none_set {
+      color: #999;
+    }
+
+    div.edit_address {
+      display: none;
+      zoom: 1;
+      padding-right: 1px;
+    }
+
+    .wc-customer-user, .wc-order-status {
+      label a {
+        float: right;
+        margin-left: 8px;
+      }
+    }
+
+    a.edit_address {
+      width: 14px;
+      height: 0;
+      padding: 14px 0 0;
+      margin: 0 0 0 6px;
+      overflow: hidden;
+      position: relative;
+      color: #999;
+      border: 0;
+      float: right;
+      &:hover, &:focus {
+        color: #000;
+      }
+      &::after {
+        font-family: 'WooCommerce';
+        position: absolute;
+        top: 0;
+        left: 0;
+        text-align: center;
+        vertical-align: top;
+        line-height: 14px;
+        font-size: 14px;
+        font-weight: 400;
+      }
+    }
+    a.edit_address::after {
+      font-family: 'Dashicons';
+      content: '\f464';
+    }
+
+    .billing-same-as-shipping,
+    .load_customer_shipping,
+    .load_customer_billing {
+      font-size: 13px;
+      display: inline-block;
+      font-weight: normal;
+    }
+
+    .load_customer_shipping {
+      margin-right: .3em;
+    }
+  }
+}

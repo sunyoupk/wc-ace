@@ -17,31 +17,29 @@ class WC_Ace_Meta_Box_Musicsource {
 
 	/**
 	 * Output musicsource data meta box.
+     *
+     * @param WP_Post $post
 	 */
-	public static function output_data() {
+	public static function output_data( $post ) {
 		?>
         <div class="panel-wrap woocommerce">
-            <div id="order_data" class="panel woocommerce-order-data">
-                <div class="order_data_column_container">
-                    <div class="order_data_column">
+            <div id="musicsource_data" class="panel wc-ace-musicsource-data">
+                <div class="musicsource_data_column_container">
+                    <div class="musicsource_data_column">
                         <h3>음원 정보</h3>
-                        <p class="form-field form-field-wide">
-                            <label for="order_date">제목:</label>
-                            <input type="text" class="" name="order_date" maxlength="10" value=""/>
-                        </p>
                         <p class="form-field form-field-wide">
                             <label for="order_date">아티스트:</label>
                             <input type="text" class="" name="order_date" maxlength="10" value=""/>
                         </p>
                     </div>
-                    <div class="order_data_column">
+                    <div class="musicsource_data_column">
                         <h3>장르</h3>
                         <p class="form-field form-field-wide">
                             <label for="order_date">장르선택:</label>
                             <input type="text" class="" name="order_date" maxlength="10" value=""/>
                         </p>
                     </div>
-                    <div class="order_data_column">
+                    <div class="musicsource_data_column">
                         <h3>라이선스</h3>
                         <p class="form-field form-field-wide">
                             <label for="order_date">Premium:</label>
@@ -49,6 +47,7 @@ class WC_Ace_Meta_Box_Musicsource {
                         </p>
                     </div>
                 </div>
+                <div class="clear"></div>
             </div>
         </div>
 		<?php

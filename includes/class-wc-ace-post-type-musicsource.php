@@ -32,7 +32,7 @@ class WC_Ace_Post_Type_Musicsource {
 			return;
 		}
 
-		$supports    = array( 'thumbnail', 'comments' );
+		$supports    = array( 'title', 'thumbnail', 'comments' );
 		$has_archive = false;
 
 		register_post_type(

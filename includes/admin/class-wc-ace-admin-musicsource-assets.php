@@ -17,14 +17,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 class WC_Ace_Admin_Musicsource_Assets {
 
 	/**
-	 * WC_Ace_Admin_Assets constructor.
+	 * WC_Ace_Admin_Musicsource_Assets constructor.
 	 */
 	public function __construct() {
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
 	}
 
 	/**
-	 * Define admin styles.
+	 * Define admin scripts.
 	 */
 	public function admin_scripts() {
 		global $wp_scripts;
@@ -65,6 +66,28 @@ class WC_Ace_Admin_Musicsource_Assets {
 			),
 		);
 		wp_localize_script( 'wc_ace_musicsource_admin', 'wc_ace_musicsource_admin', $params );
+	}
+
+	/**
+	 * Define admin styles.
+	 */
+	public function admin_styles() {
+		global $wp_scripts;
+		$screen         = get_current_screen();
+		$screen_id      = $screen ? $screen->id : '';
+		$suffix    = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+
+		// Register admin styles.
+		wp_register_style( 'wc_ace_musicsource_admin_style', wc_ace()->plugin_url() . '/public/css/admin_musicsource' . $suffix . '.css', array(), WC_ACE_VERSION );
+//		wp_register_style( 'woocommerce_admin_styles', WC()->plugin_url() . '/assets/css/admin.css', array(), WC_VERSION );
+//		wp_register_style( 'jquery-ui-style', WC()->plugin_url() . '/assets/css/jquery-ui/jquery-ui.min.css', array(), WC_VERSION );
+
+
+		if ( in_array( $screen_id, wc_ace_musicsource_get_screen_ids() ) ) {
+			error_log( wc_ace()->plugin_url() . '/public/css/admin_musicsource' . $suffix . '.css' );
+			wp_enqueue_style( 'wc_ace_musicsource_admin_style' );
+		}
+
 	}
 
 }
