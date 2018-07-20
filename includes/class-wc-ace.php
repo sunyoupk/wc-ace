@@ -23,6 +23,12 @@ final class WC_Ace {
 	public $version = '1.0';
 
 	/**
+	 * Query instance.
+	 * @var null
+	 */
+	public $query = null;
+
+	/**
 	 * Plugin main singleton instance.
 	 *
 	 * @var null
@@ -58,6 +64,7 @@ final class WC_Ace {
 		define( 'WC_ACE_ABSPATH', dirname( WC_ACE_PLUGIN_FILE ) . '/' );
 		define( 'WC_ACE_PLUGIN_BASENAME', plugin_basename( WC_ACE_PLUGIN_FILE ) );
 		define( 'WC_ACE_VERSION', $this->version );
+		define( 'WC_ACE_TEMPLATE_DEBUG_MODE', false );
 	}
 
 	/**
@@ -73,10 +80,11 @@ final class WC_Ace {
 		/**
 		 * Core classes.
 		 */
-//		include_once WC_ACE_ABSPATH . 'includes/wc-core-functions.php';
-//		include_once WC_ACE_ABSPATH . 'includes/class-wc-datetime.php';
+		include_once WC_ACE_ABSPATH . 'includes/wc-ace-core-functions.php';
 		include_once WC_ACE_ABSPATH . 'includes/class-wc-ace-post-types.php';
 		include_once WC_ACE_ABSPATH . 'includes/class-wc-ace-install.php';
+		include_once WC_ACE_ABSPATH . 'includes/class-wc-ace-query.php';
+		include_once WC_ACE_ABSPATH . 'includes/class-wc-ace-shortcodes.php';
 
 		if ( $this->is_request( 'admin' ) ) {
 			include_once WC_ACE_ABSPATH . 'includes/admin/class-wc-ace-admin.php';
@@ -85,6 +93,8 @@ final class WC_Ace {
 		if ( $this->is_request( 'frontend' ) ) {
 			$this->frontend_includes();
 		}
+
+		$this->query = new WC_Ace_Query();
 	}
 
 	/**
@@ -99,6 +109,7 @@ final class WC_Ace {
 	private function init_hooks() {
 		register_activation_hook( WC_ACE_PLUGIN_FILE, array( 'WC_Ace_Install', 'install' ) );
 		add_action( 'init', array( $this, 'init' ), 0 );
+		add_action( 'init', array( 'WC_Ace_Shortcodes', 'init' ) );
 	}
 
 	/**
@@ -148,5 +159,19 @@ final class WC_Ace {
 	 */
 	public function plugin_url() {
 		return untrailingslashit( plugins_url( '/', WC_ACE_PLUGIN_FILE ) );
+	}
+
+	/**
+	 * @return string
+	 */
+	public function plugin_path() {
+		return untrailingslashit( plugin_dir_path( WC_ACE_PLUGIN_FILE ) );
+	}
+
+	/**
+	 * @return mixed|void
+	 */
+	public function template_path() {
+		return apply_filters( 'wc_ace_template_path', 'wc_ace/' );
 	}
 }

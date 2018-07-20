@@ -75,6 +75,8 @@ class WC_Ace_Autoloader {
 
 		if ( 0 === strpos( $class, 'wc_ace_shortcode_' ) ) {
 			$path = $this->include_path . 'shortcodes/';
+		} elseif ( 0 === strpos( $class, 'wc_ace_shortcode_' ) ) {
+			$path = $this->include_path . 'shortcodes/';
 		} elseif ( 0 === strpos( $class, 'wc_ace_meta_box' ) ) {
 			$path = $this->include_path . 'admin/meta-boxes/';
 		} elseif ( 0 === strpos( $class, 'wc_ace_admin' ) ) {
