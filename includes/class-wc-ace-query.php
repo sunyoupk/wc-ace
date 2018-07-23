@@ -17,17 +17,19 @@ class WC_Ace_Query {
 	 */
 	public function __construct() {
 		add_action( 'init', array( $this, 'add_endpoints' ) );
+
 		if ( ! is_admin() ) {
 			add_filter( 'query_vars', array( $this, 'add_query_vars' ) );
 			add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
 		}
+
 		$this->init_query_vars();
 	}
 
 	public function init_query_vars() {
 		// Query vars to add to WP.
 		$this->query_vars = array(
-			'gift' => get_option( 'bangrang_gift_endpoint', 'gift' ),
+			'gift' => get_option( 'wc_ace_gift_endpoint', 'gift' ),
 		);
 	}
 
@@ -61,7 +63,7 @@ class WC_Ace_Query {
 	}
 
 	public function get_query_vars() {
-		return apply_filters( 'bangrang_get_query_vars', $this->query_vars );
+		return apply_filters( 'wc_ace_get_query_vars', $this->query_vars );
 	}
 
 	public function pre_get_posts( $q ) {
@@ -82,8 +84,7 @@ class WC_Ace_Query {
 			}
 		}
 
-		error_log( print_r( $q, true ) );
-
+//		error_log( print_r( $q, true ) );
 		return;
 	}
 

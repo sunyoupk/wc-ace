@@ -22,7 +22,7 @@ class WC_Ace_Post_Types {
 		add_action( 'init', array( __CLASS__, 'register_taxonomies' ), 20 );
 //		add_action( 'init', array( __CLASS__, 'register_post_status' ), 9 );
 //		add_action( 'wc_ace_after_register_post_type', array( __CLASS__, 'maybe_flush_rewrite_rules' ) );
-//		add_action( 'wc_ace_flush_rewrite_rules', array( __CLASS__, 'flush_rewrite_rules' ) );
+		add_action( 'wc_ace_flush_rewrite_rules', array( __CLASS__, 'flush_rewrite_rules' ) );
 	}
 
 	/**

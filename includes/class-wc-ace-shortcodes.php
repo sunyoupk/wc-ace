@@ -23,8 +23,6 @@ class WC_Ace_Shortcodes {
 			add_shortcode( apply_filters( "{$shortcode}_shortcode_tag", $shortcode ), $function );
 		}
 
-		// Alias for pre 2.1 compatibility.
-		add_shortcode( 'woocommerce_messages', __CLASS__ . '::shop_messages' );
 	}
 
 	/**
@@ -40,7 +38,7 @@ class WC_Ace_Shortcodes {
 		$function,
 		$atts = array(),
 		$wrapper = array(
-			'class'  => 'woocommerce',
+			'class'  => 'wc-ace-shortcode',
 			'before' => null,
 			'after'  => null,
 		)

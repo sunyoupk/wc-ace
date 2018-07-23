@@ -41,6 +41,8 @@ class WC_Ace_Install {
 		self::prepare_post_types();
 
 		delete_transient( 'wc_ace_installing' );
+
+		do_action( 'wc_ace_flush_rewrite_rules' );
 	}
 
 	/**
