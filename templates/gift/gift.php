@@ -9,7 +9,7 @@
 
 <h4>
 	<?php
-//	error_log( print_r( $order, true ) );
+	//	error_log( print_r( $order, true ) );
 
 	echo sprintf( esc_html( '%1$s님으로부터 %2$s 받은 선물 입니다.', 'wc-ace' ),
 		$order->get_billing_first_name(), esc_html( wc_format_datetime( $order->get_date_created() ) )
@@ -24,8 +24,7 @@
     처리상태가 배송주소 입력 대기중 인 경우 배송주로를 변경 할 수 있습니다.
 </p>
 
-<form name="gift" method="post" class="gift wc-ace-gift"
-      enctype="multipart/form-data">
+<form name="gift" method="post" class="gift wc-ace-gift" enctype="multipart/form-data">
 
     <div class="woocommerce-shipping-fields">
 
@@ -42,15 +41,18 @@
 				) );
 
 				foreach ( $shipping_fields['shipping'] as $key => $field ) {
-                    $value = '';
 					if ( is_callable( array( $order, 'get_' . $key ) ) ) {
 						$value = $order->{"get_$key"}();
+					} else {
+						$value = $order->get_meta( '_' . $key );
 					}
 					woocommerce_form_field( $key, $field, $value );
 				}
 				?>
 
                 <button type="submit" name="" value="" class="button alt">주소저장</button>
+                <button type="button" id="btn_send_kakao" class="button alt">카카오톡 보내기</button>
+
             </div>
 
         </div>

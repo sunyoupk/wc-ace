@@ -83,6 +83,7 @@ final class WC_Ace {
 		include_once WC_ACE_ABSPATH . 'includes/wc-ace-core-functions.php';
 		include_once WC_ACE_ABSPATH . 'includes/class-wc-ace-post-types.php';
 		include_once WC_ACE_ABSPATH . 'includes/class-wc-ace-install.php';
+		include_once WC_ACE_ABSPATH . 'includes/class-wc-ace-ajax.php';
 		include_once WC_ACE_ABSPATH . 'includes/class-wc-ace-query.php';
 		include_once WC_ACE_ABSPATH . 'includes/class-wc-ace-shortcodes.php';
 
@@ -101,6 +102,7 @@ final class WC_Ace {
 	 * Include front-end files.
 	 */
 	public function frontend_includes() {
+		include_once WC_ACE_ABSPATH . 'includes/class-wc-ace-frontend-scripts.php';
 	}
 
 	/**
@@ -138,6 +140,9 @@ final class WC_Ace {
 	 * Init plugin.
 	 */
 	public function init() {
+		// Before init action.
+		do_action( 'before_wc_ace_init' );
+
 		// Set up localisation.
 		$this->load_plugin_textdomain();
 	}
@@ -173,5 +178,14 @@ final class WC_Ace {
 	 */
 	public function template_path() {
 		return apply_filters( 'wc_ace_template_path', 'wc_ace/' );
+	}
+
+	/**
+	 * Get Ajax URL.
+	 *
+	 * @return string
+	 */
+	public function ajax_url() {
+		return admin_url( 'admin-ajax.php', 'relative' );
 	}
 }

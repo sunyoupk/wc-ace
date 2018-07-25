@@ -52,7 +52,7 @@ class WC_Ace_Query {
 	public function get_endpoints_mask() {
 		if ( 'page' === get_option( 'show_on_front' ) ) {
 			$page_on_front = get_option( 'page_on_front' );
-			$gift_page_id  = get_option( 'bangrang_gift_page_id' );
+			$gift_page_id  = get_option( 'wc_ace_gift_page_id' );
 
 			if ( in_array( $page_on_front, array( $gift_page_id ), true ) ) {
 				return EP_ROOT | EP_PAGES;
