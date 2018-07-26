@@ -15,6 +15,10 @@ require WC_ACE_ABSPATH . 'includes/wc-ace-page-functions.php';
 
 
 add_filter( 'wc_ace_gift_shipping_address_fields', 'wc_ace_gift_shipping_address_fields' );
+
+//add_filter( 'woocommerce_billing_fields', 'wc_ace_billing_fields', 10, 2 );
+//add_filter( 'woocommerce_shipping_fields', 'wc_ace_shipping_fields', 10, 2 );
+
 /**
  * Get wc-ace temeplate.
  *
@@ -106,6 +110,13 @@ function wc_ace_get_gift_url() {
 	return apply_filters( 'wc_ace_get_ace_url', $gift_url );
 }
 
+/**
+ *
+ * Gift page address filed customization.
+ * @param $fields
+ *
+ * @return mixed
+ */
 function wc_ace_gift_shipping_address_fields( $fields ) {
 	unset( $fields['shipping']['shipping_last_name'] );
 	unset( $fields['shipping']['shipping_company'] );
@@ -118,4 +129,11 @@ function wc_ace_gift_shipping_address_fields( $fields ) {
 	$fields['shipping']['shipping_postcode']['required']  = 0;
 
 	return $fields;
+}
+
+if ( ! function_exists( 'wc_ace_billing_fields' ) ) {
+	function wc_ace_billing_fields( $fields, $country ) {
+		$fields['billing_address_1']['label'] = '<input type="button" id="billing_postcode_search" data-type="billing" value="주소검색" class="button btn-search-postcode" style="height: 40px;">';
+		return $fields;
+	}
 }

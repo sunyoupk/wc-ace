@@ -157,18 +157,28 @@ class WC_Ace_Frontend_Scripts {
 		$suffix = '';
 		//$suffix           = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		$register_scripts = array(
-			'wc-ace-gift' => array(
+			'wc-ace-gift'     => array(
 				'src'     => self::get_asset_url( 'public/js/frontend/gift' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
 				'version' => WC_ACE_VERSION,
 			),
-			'wc-ace'      => array(
+			'wc-ace-checkout' => array(
+				'src'     => self::get_asset_url( 'public/js/frontend/checkout' . $suffix . '.js' ),
+				'deps'    => array( 'jquery', 'postcode-api' ),
+				'version' => WC_ACE_VERSION,
+			),
+			'wc-ace'          => array(
 				'src'     => self::get_asset_url( 'public/js/frontend/wc-ace' . $suffix . '.js' ),
 				'deps'    => array( 'jquery', 'jquery-blockui', 'js-cookie' ),
 				'version' => WC_ACE_VERSION,
 			),
-			'kakao'      => array(
+			'kakao-api'       => array(
 				'src'     => '//developers.kakao.com/sdk/js/kakao.min.js',
+				'deps'    => null,
+				'version' => null,
+			),
+			'postcode-api'    => array(
+				'src'     => '//ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js',
 				'deps'    => null,
 				'version' => null,
 			),
@@ -213,7 +223,11 @@ class WC_Ace_Frontend_Scripts {
 
 		if ( is_gift() ) {
 			self::enqueue_script( 'wc-ace-gift' );
-			self::enqueue_script( 'kakao' );
+			self::enqueue_script( 'kakao-api' );
+		}
+
+		if ( is_checkout() ) {
+			self::enqueue_script( 'wc-ace-checkout' );
 		}
 
 		// Global frontend scripts.
@@ -272,6 +286,12 @@ class WC_Ace_Frontend_Scripts {
 				$params = array(
 					'ajax_url'        => wc_ace()->ajax_url(),
 					'wc_ace_ajax_url' => WC_Ace_AJAX::get_endpoint( '%%endpoint%%' ),
+				);
+				break;
+			case 'wc-ace-checkout':
+				$params = array(
+					'ajax_url'       => wc_ace()->ajax_url(),
+					'postcode_digit' => '5',
 				);
 				break;
 			case 'wc-ace-gift':
