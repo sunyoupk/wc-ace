@@ -159,7 +159,7 @@ class WC_Ace_Frontend_Scripts {
 		$register_scripts = array(
 			'wc-ace-gift'     => array(
 				'src'     => self::get_asset_url( 'public/js/frontend/gift' . $suffix . '.js' ),
-				'deps'    => array( 'jquery' ),
+				'deps'    => array( 'jquery', 'kakao-api' ),
 				'version' => WC_ACE_VERSION,
 			),
 			'wc-ace-checkout' => array(
@@ -221,12 +221,11 @@ class WC_Ace_Frontend_Scripts {
 		self::register_styles();
 
 
-		if ( is_gift() ) {
+		if ( is_gift() || is_view_order_page() ) {
 			self::enqueue_script( 'wc-ace-gift' );
-			self::enqueue_script( 'kakao-api' );
 		}
 
-		if ( is_checkout() ) {
+		if ( is_checkout() || is_view_order_page() ) {
 			self::enqueue_script( 'wc-ace-checkout' );
 		}
 
@@ -303,7 +302,7 @@ class WC_Ace_Frontend_Scripts {
 					'is_gift'                            => is_page( wc_ace_get_page_id( 'gift' ) ) && empty( $wp->query_vars['gift'] ) && ! isset( $wp->query_vars['gift-received'] ) ? 1 : 0,
 					'debug_mode'                         => defined( 'WP_DEBUG' ) && WP_DEBUG,
 					'i18n_gift_error'                    => esc_attr__( '처리중 에러가 발생하였습니다. 다시 시도해주시기 바랍니다.', 'wc-ace' ),
-					'order_id'                           => get_query_var( 'page' ),
+					'order_id'                           => is_view_order_page() ? $wp->query_vars['view-order'] : get_query_var( 'page' ),
 				);
 				break;
 			default:

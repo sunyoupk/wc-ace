@@ -116,6 +116,7 @@ class WC_Ace_Ajax {
 		try {
 			$order_id = absint( $_POST['order_id'] );
 			$order    = wc_get_order( $order_id );
+
 			if ( ! $order ) {
 				throw new exception( __( 'Invalid order', 'wc-ace' ) );
 			}
@@ -125,6 +126,11 @@ class WC_Ace_Ajax {
 				'shipping_phone'      => __( '전화번호', 'wc-ace' ),
 				'shipping_address_1'  => __( '주소', 'wc-ace' ),
 			) );
+
+			// Must check fields from Gift page.
+			if ( absint( $_POST['is_gift'] ) != 1 && in_array( $_POST['shipping_address_method'], array( 'sms', 'kakao' ) ) ) {
+				unset( $required_fields['shipping_address_1'] );
+			}
 
 			$messages = '';
 			ob_start();
@@ -144,6 +150,7 @@ class WC_Ace_Ajax {
 					'shipping_first_name' => isset( $_POST['shipping_first_name'] ) ? wp_unslash( $_POST['shipping_first_name'] ) : null,
 				) );
 				$order->update_meta_data( '_shipping_phone', isset( $_POST['shipping_phone'] ) ? wp_unslash( $_POST['shipping_phone'] ) : null );
+				$order->update_meta_data( '_shipping_address_method', isset( $_POST['shipping_address_method'] ) ? wp_unslash( $_POST['shipping_address_method'] ) : null );
 				$order->save();
 			}
 
