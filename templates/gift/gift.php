@@ -50,9 +50,7 @@
 				}
 				?>
 
-                <button type="submit" name="" value="" class="button alt">주소저장</button>
-                <button type="button" id="btn_send_kakao" class="button alt">카카오톡 보내기</button>
-
+                <button type="submit" name="" value="" class="button alt">주소저장 및 선물배송요청</button>
             </div>
 
         </div>

@@ -61,6 +61,7 @@ class WC_Ace_Shortcodes {
 	 * @return string
 	 */
 	public static function gift( $atts ) {
+
 		return self::shortcode_wrapper( array( 'WC_Ace_Shortcode_Gift', 'output' ), $atts );
 	}
 }

@@ -157,27 +157,32 @@ class WC_Ace_Frontend_Scripts {
 		$suffix = '';
 		//$suffix           = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		$register_scripts = array(
-			'wc-ace-gift'     => array(
+			'wc-ace-gift'          => array(
 				'src'     => self::get_asset_url( 'public/js/frontend/gift' . $suffix . '.js' ),
 				'deps'    => array( 'jquery', 'kakao-api' ),
 				'version' => WC_ACE_VERSION,
 			),
-			'wc-ace-checkout' => array(
+			'wc-ace-gift-recipent' => array(
+				'src'     => self::get_asset_url( 'public/js/frontend/recipent-auth-check' . $suffix . '.js' ),
+				'deps'    => array( 'jquery' ),
+				'version' => WC_ACE_VERSION,
+			),
+			'wc-ace-checkout'      => array(
 				'src'     => self::get_asset_url( 'public/js/frontend/checkout' . $suffix . '.js' ),
 				'deps'    => array( 'jquery', 'postcode-api' ),
 				'version' => WC_ACE_VERSION,
 			),
-			'wc-ace'          => array(
+			'wc-ace'               => array(
 				'src'     => self::get_asset_url( 'public/js/frontend/wc-ace' . $suffix . '.js' ),
 				'deps'    => array( 'jquery', 'jquery-blockui', 'js-cookie' ),
 				'version' => WC_ACE_VERSION,
 			),
-			'kakao-api'       => array(
+			'kakao-api'            => array(
 				'src'     => '//developers.kakao.com/sdk/js/kakao.min.js',
 				'deps'    => null,
 				'version' => null,
 			),
-			'postcode-api'    => array(
+			'postcode-api'         => array(
 				'src'     => '//ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js',
 				'deps'    => null,
 				'version' => null,
@@ -221,12 +226,16 @@ class WC_Ace_Frontend_Scripts {
 		self::register_styles();
 
 
-		if ( is_gift() || is_view_order_page() ) {
+		if ( is_view_order_page() ) {
 			self::enqueue_script( 'wc-ace-gift' );
 		}
 
 		if ( is_checkout() || is_view_order_page() ) {
 			self::enqueue_script( 'wc-ace-checkout' );
+		}
+
+		if ( is_gift() ) {
+			self::enqueue_script( 'wc-ace-gift-recipent' );
 		}
 
 		// Global frontend scripts.
@@ -303,6 +312,18 @@ class WC_Ace_Frontend_Scripts {
 					'debug_mode'                         => defined( 'WP_DEBUG' ) && WP_DEBUG,
 					'i18n_gift_error'                    => esc_attr__( '처리중 에러가 발생하였습니다. 다시 시도해주시기 바랍니다.', 'wc-ace' ),
 					'order_id'                           => is_view_order_page() ? $wp->query_vars['view-order'] : get_query_var( 'page' ),
+				);
+				break;
+			case 'wc-ace-gift-recipient':
+				$params = array(
+					'ajax_url'                        => wc_ace()->ajax_url(),
+					'wc_ace_ajax_url'                 => WC_Ace_AJAX::get_endpoint( '%%endpoint%%' ),
+					'gift_recipient_auth_check_nonce' => wp_create_nonce( 'gift-recipient-auth-check-nonce' ),
+					'gift_url'                        => WC_Ace_AJAX::get_endpoint( 'gift' ),
+					'is_gift'                         => is_page( wc_ace_get_page_id( 'gift' ) ) && empty( $wp->query_vars['gift'] ) && ! isset( $wp->query_vars['gift-received'] ) ? 1 : 0,
+					'debug_mode'                      => defined( 'WP_DEBUG' ) && WP_DEBUG,
+					'i18n_error'                      => esc_attr__( '처리중 에러가 발생하였습니다. 다시 시도해주시기 바랍니다.', 'wc-ace' ),
+					'order_id'                        => is_view_order_page() ? $wp->query_vars['view-order'] : get_query_var( 'page' ),
 				);
 				break;
 			default:
