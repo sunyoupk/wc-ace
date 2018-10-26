@@ -128,7 +128,10 @@ class WC_Ace_Ajax {
 			) );
 
 			// Must check fields from Gift page.
-			if ( absint( $_POST['is_gift'] ) != 1 && in_array( $_POST['shipping_address_method'], array( 'sms', 'kakao' ) ) ) {
+			if ( absint( $_POST['is_gift'] ) != 1 && in_array( $_POST['shipping_address_method'], array(
+					'sms',
+					'kakao'
+				) ) ) {
 				unset( $required_fields['shipping_address_1'] );
 			}
 
@@ -165,8 +168,54 @@ class WC_Ace_Ajax {
 		} catch ( Exception $e ) {
 			wp_send_json_error( array( 'error' => $e->getMessage() ) );
 		}
+	}
 
+	/**
+	 * Authenticate gift recipient identification.
+	 */
+	public static function gift_recipient_check() {
+		check_ajax_referer( 'gift-recipient-auth-check-nonce', 'security' );
 
+		try {
+			$order_id = absint( $_POST['order_id'] );
+			$order    = wc_get_order( $order_id );
+
+			if ( ! $order ) {
+				throw new exception( __( 'Invalid order', 'wc-ace' ) );
+			}
+
+			$required_fields = array(
+				// todo namespace 휴대전화번호
+				'recipient_phone' => __( '휴대전화번호', 'wc-ace' ),
+			);
+
+			$messages = '';
+			ob_start();
+			foreach ( $required_fields as $field_key => $field_name ) {
+				if ( empty( $_POST[ $field_key ] ) ) {
+					wc_add_notice( sprintf( __( '%s is a required field.', 'woocommerce' ), '<strong>' . esc_html( $field_name ) . '</strong>' ), 'error' );
+				}
+			}
+			wc_print_notices();
+			$messages = ob_get_clean();
+
+			if ( empty( $messages ) ) {
+				$order_shipping_phone = esc_html( $order->get_meta( '_shipping_phone' ) );
+				$recipient_phone = isset( $_POST['recipient_phone'] ) ? wp_unslash( $_POST['recipient_phone'] ) : null;
+
+			}
+
+			wp_send_json(
+				array(
+					'result'   => empty( $messages ) ? 'success' : 'failure',
+					'messages' => $messages,
+					'reload'   => empty( $messages ) ? true : false,
+				)
+			);
+
+		} catch ( Exception $e ) {
+			wp_send_json_error( array( 'error' => $e->getMessage() ) );
+		}
 	}
 }
 

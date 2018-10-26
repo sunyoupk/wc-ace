@@ -19,8 +19,8 @@
 
     <div class="woocommerce-shipping-fields__field-wrapper">
         <p class="woocommerce-form-row woocommerce-form-row--first form-row form-row-first">
-            <label for="order_shipping_phone">휴대전화번호</label>
-            <input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="order_shipping_phone" id="order_shipping_phone" >
+            <label for="recipient_phone">휴대전화번호</label>
+            <input type="text" class="woocommerce-Input woocommerce-Input--text input-text validate-required" name="recipient_phone" id="recipient_phone" >
         </p>
         <div class="clear"></div>
         <p>
