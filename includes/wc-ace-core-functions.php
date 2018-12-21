@@ -23,7 +23,7 @@ add_filter( 'wc_ace_gift_shipping_address_fields', 'wc_ace_gift_shipping_address
  * Get wc-ace temeplate.
  *
  * @param        $template_name
- * @param array  $args
+ * @param array $args
  * @param string $template_path
  * @param string $default_path
  */
@@ -113,6 +113,7 @@ function wc_ace_get_gift_url() {
 /**
  *
  * Gift page address filed customization.
+ *
  * @param $fields
  *
  * @return mixed
@@ -134,6 +135,65 @@ function wc_ace_gift_shipping_address_fields( $fields ) {
 if ( ! function_exists( 'wc_ace_billing_fields' ) ) {
 	function wc_ace_billing_fields( $fields, $country ) {
 		$fields['billing_address_1']['label'] = '<input type="button" id="billing_postcode_search" data-type="billing" value="주소검색" class="button btn-search-postcode" style="height: 40px;">';
+
 		return $fields;
 	}
 }
+
+if ( ! function_exists( 'wc_ace_gift_statuses' ) ) {
+	function wc_ace_gift_statuses() {
+		$gift_statuses = array(
+			'wc-gift-addressing' => array(
+				'label'                     => __( '선물 배송주소 입력 중', 'wc-ace' ),
+				'public'                    => true,
+				'exclude_from_search'       => false,
+				'show_in_admin_all_list'    => true,
+				'show_in_admin_status_list' => true,
+				'label_count'               => _n_noop( '선물 배송주소 입력 중 <span class="count">(%s)</span>', '선물 배송주소 입력 중 <span class="count">(%s)</span>' )
+			),
+			'wc-gift-requested'  => array(
+				'label'                     => __( '선물 배송요청', 'wc-ace' ),
+				'public'                    => true,
+				'exclude_from_search'       => false,
+				'show_in_admin_all_list'    => true,
+				'show_in_admin_status_list' => true,
+				'label_count'               => _n_noop( '선물 배송요청 <span class="count">(%s)</span>', '선물 배송요청 <span class="count">(%s)</span>' )
+			)
+		);
+
+		return $gift_statuses;
+	}
+}
+
+if ( ! function_exists( 'wc_ace_gift_message_api' ) ) {
+	function wc_ace_gift_message_api() {
+		return array(
+			'direct' => array(
+				'input_id'    => 'shipping_address_method_direct',
+				'input_value' => 'direct',
+				'label'       => '주소 직접입력',
+				'description' => '선물로 보낼 주소를 직접 입력합니다.',
+			),
+			'email'  => array(
+				'input_id'    => 'shipping_address_method_email',
+				'input_value' => 'email',
+				'label'       => '주소 입력폼 전송(EMail)',
+				'description' => '주문확정을 하시면 받는 분이 주소를 직접 입력하도록 입력 화면의 URL을 EMail로 전송합니다.',
+			),
+			'kakao'  => array(
+				'input_id'    => 'shipping_address_method_kakao',
+				'input_value' => 'kakao',
+				'label'       => '주소 입력폼 전송(kakao talk)',
+				'description' => '주문확정을 하시면 받는 분이 주소를 직접 입력하도록 입력 화면의 URL을 kakao talk로 전송합니다.',
+			),
+			'sms'    => array(
+				'input_id'    => 'shipping_address_method_sms',
+				'input_value' => 'sms',
+				'label'       => '주소 입력폼 전송(SMS)',
+				'description' => '주문확정을 하시면 받는 분이 주소를 직접 입력하도록 입력 화면의 URL을 SMS로 전송합니다.',
+			),
+		);
+	}
+}
+
+

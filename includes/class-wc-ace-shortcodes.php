@@ -22,7 +22,6 @@ class WC_Ace_Shortcodes {
 		foreach ( $shortcodes as $shortcode => $function ) {
 			add_shortcode( apply_filters( "{$shortcode}_shortcode_tag", $shortcode ), $function );
 		}
-
 	}
 
 	/**
@@ -51,7 +50,6 @@ class WC_Ace_Shortcodes {
 		echo empty( $wrapper['after'] ) ? '</div>' : $wrapper['after'];
 
 		// @codingStandardsIgnoreEnd
-
 		return ob_get_clean();
 	}
 
@@ -61,7 +59,6 @@ class WC_Ace_Shortcodes {
 	 * @return string
 	 */
 	public static function gift( $atts ) {
-
 		return self::shortcode_wrapper( array( 'WC_Ace_Shortcode_Gift', 'output' ), $atts );
 	}
 }

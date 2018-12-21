@@ -86,6 +86,7 @@ final class WC_Ace {
 		include_once WC_ACE_ABSPATH . 'includes/class-wc-ace-ajax.php';
 		include_once WC_ACE_ABSPATH . 'includes/class-wc-ace-query.php';
 		include_once WC_ACE_ABSPATH . 'includes/class-wc-ace-shortcodes.php';
+		include_once WC_ACE_ABSPATH . 'includes/wc-ace-woocommerce-hooks.php';
 
 		if ( $this->is_request( 'admin' ) ) {
 			include_once WC_ACE_ABSPATH . 'includes/admin/class-wc-ace-admin.php';

@@ -1,0 +1,34 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: bangrang
+ * Date: 29/10/2018
+ * Time: 8:01 PM
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+add_filter( 'wc_order_statuses', 'wc_ace_order_and_gift_statuses' );
+
+if ( ! function_exists( 'wc_ace_order_and_gift_statuses' ) ) {
+
+	/**
+	 * Append gift statuses to Order status.
+	 * @param $order_statuses
+	 *
+	 * @return array
+	 */
+	function wc_ace_order_and_gift_statuses( $order_statuses ) {
+		$new_order_statuses = array();
+
+		foreach ( $order_statuses as $key => $status ) {
+			$new_order_statuses[ $key ] = $status;
+			if ( 'wc-pending' === $key ) {
+				$new_order_statuses['wc-gift-addressing'] = __( '선물 배송주소 입력 중', 'wc-ace' );
+				$new_order_statuses['wc-gift-requested'] = __( '선물 배송요청', 'wc-ace' );
+			}
+		}
+		return $new_order_statuses;
+	}
+
+}

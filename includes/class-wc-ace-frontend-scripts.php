@@ -77,11 +77,11 @@ class WC_Ace_Frontend_Scripts {
 	 *
 	 * @uses   wp_register_script()
 	 *
-	 * @param  string   $handle Name of the script. Should be unique.
-	 * @param  string   $path Full URL of the script, or path of the script relative to the WordPress root directory.
+	 * @param  string $handle Name of the script. Should be unique.
+	 * @param  string $path Full URL of the script, or path of the script relative to the WordPress root directory.
 	 * @param  string[] $deps An array of registered script handles this script depends on.
-	 * @param  string   $version String specifying script version number, if it has one, which is added to the URL as a query string for cache busting purposes. If version is set to false, a version number is automatically added equal to current installed WordPress version. If set to null, no version is added.
-	 * @param  boolean  $in_footer Whether to enqueue the script before </body> instead of in the <head>. Default 'false'.
+	 * @param  string $version String specifying script version number, if it has one, which is added to the URL as a query string for cache busting purposes. If version is set to false, a version number is automatically added equal to current installed WordPress version. If set to null, no version is added.
+	 * @param  boolean $in_footer Whether to enqueue the script before </body> instead of in the <head>. Default 'false'.
 	 */
 	private static function register_script( $handle, $path, $deps = array( 'jquery' ), $version = WC_ACE_VERSION, $in_footer = true ) {
 		self::$scripts[] = $handle;
@@ -94,11 +94,11 @@ class WC_Ace_Frontend_Scripts {
 	 * @uses   wp_enqueue_script()
 	 * @see    WC_Frontend_Scripts::enqueue_script()
 	 *
-	 * @param  string   $handle Name of the script. Should be unique.
-	 * @param  string   $path Full URL of the script, or path of the script relative to the WordPress root directory.
+	 * @param  string $handle Name of the script. Should be unique.
+	 * @param  string $path Full URL of the script, or path of the script relative to the WordPress root directory.
 	 * @param  string[] $deps An array of registered script handles this script depends on.
-	 * @param  string   $version String specifying script version number, if it has one, which is added to the URL as a query string for cache busting purposes. If version is set to false, a version number is automatically added equal to current installed WordPress version. If set to null, no version is added.
-	 * @param  boolean  $in_footer Whether to enqueue the script before </body> instead of in the <head>. Default 'false'.
+	 * @param  string $version String specifying script version number, if it has one, which is added to the URL as a query string for cache busting purposes. If version is set to false, a version number is automatically added equal to current installed WordPress version. If set to null, no version is added.
+	 * @param  boolean $in_footer Whether to enqueue the script before </body> instead of in the <head>. Default 'false'.
 	 */
 	private static function enqueue_script( $handle, $path = '', $deps = array( 'jquery' ), $version = WC_ACE_VERSION, $in_footer = true ) {
 		if ( ! in_array( $handle, self::$scripts, true ) && $path ) {
@@ -113,12 +113,12 @@ class WC_Ace_Frontend_Scripts {
 	 * @uses   wp_register_style()
 	 * @see    WC_Frontend_Scripts::register_style()
 	 *
-	 * @param  string   $handle Name of the stylesheet. Should be unique.
-	 * @param  string   $path Full URL of the stylesheet, or path of the stylesheet relative to the WordPress root directory.
+	 * @param  string $handle Name of the stylesheet. Should be unique.
+	 * @param  string $path Full URL of the stylesheet, or path of the stylesheet relative to the WordPress root directory.
 	 * @param  string[] $deps An array of registered stylesheet handles this stylesheet depends on.
-	 * @param  string   $version String specifying stylesheet version number, if it has one, which is added to the URL as a query string for cache busting purposes. If version is set to false, a version number is automatically added equal to current installed WordPress version. If set to null, no version is added.
-	 * @param  string   $media The media for which this stylesheet has been defined. Accepts media types like 'all', 'print' and 'screen', or media queries like '(orientation: portrait)' and '(max-width: 640px)'.
-	 * @param  boolean  $has_rtl If has RTL version to load too.
+	 * @param  string $version String specifying stylesheet version number, if it has one, which is added to the URL as a query string for cache busting purposes. If version is set to false, a version number is automatically added equal to current installed WordPress version. If set to null, no version is added.
+	 * @param  string $media The media for which this stylesheet has been defined. Accepts media types like 'all', 'print' and 'screen', or media queries like '(orientation: portrait)' and '(max-width: 640px)'.
+	 * @param  boolean $has_rtl If has RTL version to load too.
 	 */
 	private static function register_style( $handle, $path, $deps = array(), $version = WC_ACE_VERSION, $media = 'all', $has_rtl = false ) {
 		self::$styles[] = $handle;
@@ -135,12 +135,12 @@ class WC_Ace_Frontend_Scripts {
 	 * @uses   wp_enqueue_style()
 	 * @see    WC_Frontend_Scripts::enqueue_style()
 	 *
-	 * @param  string   $handle Name of the stylesheet. Should be unique.
-	 * @param  string   $path Full URL of the stylesheet, or path of the stylesheet relative to the WordPress root directory.
+	 * @param  string $handle Name of the stylesheet. Should be unique.
+	 * @param  string $path Full URL of the stylesheet, or path of the stylesheet relative to the WordPress root directory.
 	 * @param  string[] $deps An array of registered stylesheet handles this stylesheet depends on.
-	 * @param  string   $version String specifying stylesheet version number, if it has one, which is added to the URL as a query string for cache busting purposes. If version is set to false, a version number is automatically added equal to current installed WordPress version. If set to null, no version is added.
-	 * @param  string   $media The media for which this stylesheet has been defined. Accepts media types like 'all', 'print' and 'screen', or media queries like '(orientation: portrait)' and '(max-width: 640px)'.
-	 * @param  boolean  $has_rtl If has RTL version to load too.
+	 * @param  string $version String specifying stylesheet version number, if it has one, which is added to the URL as a query string for cache busting purposes. If version is set to false, a version number is automatically added equal to current installed WordPress version. If set to null, no version is added.
+	 * @param  string $media The media for which this stylesheet has been defined. Accepts media types like 'all', 'print' and 'screen', or media queries like '(orientation: portrait)' and '(max-width: 640px)'.
+	 * @param  boolean $has_rtl If has RTL version to load too.
 	 */
 	private static function enqueue_style( $handle, $path = '', $deps = array(), $version = WC_ACE_VERSION, $media = 'all', $has_rtl = false ) {
 		if ( ! in_array( $handle, self::$styles, true ) && $path ) {
@@ -157,32 +157,32 @@ class WC_Ace_Frontend_Scripts {
 		$suffix = '';
 		//$suffix           = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		$register_scripts = array(
-			'wc-ace-gift'          => array(
+			'wc-ace-gift'           => array(
 				'src'     => self::get_asset_url( 'public/js/frontend/gift' . $suffix . '.js' ),
-				'deps'    => array( 'jquery', 'kakao-api' ),
+				'deps'    => array( 'jquery', 'postcode-api', 'kakao-api' ),
 				'version' => WC_ACE_VERSION,
 			),
-			'wc-ace-gift-recipent' => array(
-				'src'     => self::get_asset_url( 'public/js/frontend/recipent-auth-check' . $suffix . '.js' ),
+			'wc-ace-gift-recipient' => array(
+				'src'     => self::get_asset_url( 'public/js/frontend/gift-recipient' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
 				'version' => WC_ACE_VERSION,
 			),
-			'wc-ace-checkout'      => array(
+			'wc-ace-checkout'       => array(
 				'src'     => self::get_asset_url( 'public/js/frontend/checkout' . $suffix . '.js' ),
 				'deps'    => array( 'jquery', 'postcode-api' ),
 				'version' => WC_ACE_VERSION,
 			),
-			'wc-ace'               => array(
+			'wc-ace'                => array(
 				'src'     => self::get_asset_url( 'public/js/frontend/wc-ace' . $suffix . '.js' ),
 				'deps'    => array( 'jquery', 'jquery-blockui', 'js-cookie' ),
 				'version' => WC_ACE_VERSION,
 			),
-			'kakao-api'            => array(
+			'kakao-api'             => array(
 				'src'     => '//developers.kakao.com/sdk/js/kakao.min.js',
 				'deps'    => null,
 				'version' => null,
 			),
-			'postcode-api'         => array(
+			'postcode-api'          => array(
 				'src'     => '//ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js',
 				'deps'    => null,
 				'version' => null,
@@ -235,7 +235,8 @@ class WC_Ace_Frontend_Scripts {
 		}
 
 		if ( is_gift() ) {
-			self::enqueue_script( 'wc-ace-gift-recipent' );
+			self::enqueue_script( 'wc-ace-gift' );
+			self::enqueue_script( 'wc-ace-gift-recipient' );
 		}
 
 		// Global frontend scripts.
@@ -287,7 +288,7 @@ class WC_Ace_Frontend_Scripts {
 	 * @return array|bool
 	 */
 	private static function get_script_data( $handle ) {
-		global $wp;
+		global $wp, $theorder;
 
 		switch ( $handle ) {
 			case 'wc-ace':
@@ -309,9 +310,14 @@ class WC_Ace_Frontend_Scripts {
 					'gift_update_shipping_address_nonce' => wp_create_nonce( 'gift-update-shipping-address' ),
 					'gift_url'                           => WC_Ace_AJAX::get_endpoint( 'gift' ),
 					'is_gift'                            => is_page( wc_ace_get_page_id( 'gift' ) ) && empty( $wp->query_vars['gift'] ) && ! isset( $wp->query_vars['gift-received'] ) ? 1 : 0,
+					'is_editable'                        => is_a( $theorder, 'WC_Order' ) ? in_array( $theorder->get_status(), array(
+						'on-hold',
+						'gift-addressing'
+					) ) : false,
 					'debug_mode'                         => defined( 'WP_DEBUG' ) && WP_DEBUG,
 					'i18n_gift_error'                    => esc_attr__( '처리중 에러가 발생하였습니다. 다시 시도해주시기 바랍니다.', 'wc-ace' ),
 					'order_id'                           => is_view_order_page() ? $wp->query_vars['view-order'] : get_query_var( 'page' ),
+					'postcode_digit'                     => '5',
 				);
 				break;
 			case 'wc-ace-gift-recipient':

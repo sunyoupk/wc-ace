@@ -5,7 +5,7 @@ Plugin URI: http://URI_Of_Page_Describing_Plugin_and_Updates
 Description: A brief description of the Plugin.
 Version: 1.0
 Author: Sunyoup Kim
-Author URI: http://URI_Of_The_Plugin_Author
+Author URI: http://runawaywith.it
 License: A "Slug" license name e.g. GPL2
 */
 

@@ -19,7 +19,8 @@ class WC_Ace_Query {
 		add_action( 'init', array( $this, 'add_endpoints' ) );
 
 		if ( ! is_admin() ) {
-			add_filter( 'query_vars', array( $this, 'add_query_vars' ) );
+			add_filter( 'query_vars', array( $this, 'add_query_vars' ), 10 );
+			add_action( 'parse_request', array( $this, 'parse_request' ), 10 );
 			add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
 		}
 
@@ -54,6 +55,9 @@ class WC_Ace_Query {
 			$page_on_front = get_option( 'page_on_front' );
 			$gift_page_id  = get_option( 'wc_ace_gift_page_id' );
 
+//			error_log( 'Gift Page ID => ' . $gift_page_id );
+//			error_log( 'Page on front => ' . $page_on_front );
+
 			if ( in_array( $page_on_front, array( $gift_page_id ), true ) ) {
 				return EP_ROOT | EP_PAGES;
 			}
@@ -86,6 +90,23 @@ class WC_Ace_Query {
 
 //		error_log( print_r( $q, true ) );
 		return;
+	}
+
+	/**
+	 * Parse the request and look for query vars - endpoints may not be supported.
+	 * @see class-wc-query.php
+	 */
+	public function parse_request() {
+		global $wp;
+
+		// Map query vars to their keys, or get them if endpoints are not supported.
+		foreach ( $this->get_query_vars() as $key => $var ) {
+			if ( isset( $_GET[ $var ] ) ) { // WPCS: input var ok, CSRF ok.
+				$wp->query_vars[ $key ] = sanitize_text_field( wp_unslash( $_GET[ $var ] ) ); // WPCS: input var ok, CSRF ok.
+			} elseif ( isset( $wp->query_vars[ $var ] ) ) {
+				$wp->query_vars[ $key ] = $wp->query_vars[ $var ];
+			}
+		}
 	}
 
 	private function is_showing_page_on_front( $q ) {

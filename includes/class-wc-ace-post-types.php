@@ -7,7 +7,7 @@
  */
 
 /**
- * Class WC_Ace_Posttypes
+ * Class WC_Ace_PostTypes
  *
  * @package wc_ace\includes
  */
@@ -20,8 +20,8 @@ class WC_Ace_Post_Types {
 		self::register_support_posttypes();
 		add_action( 'init', array( __CLASS__, 'register_post_types' ), 10 );
 		add_action( 'init', array( __CLASS__, 'register_taxonomies' ), 20 );
-//		add_action( 'init', array( __CLASS__, 'register_post_status' ), 9 );
-//		add_action( 'wc_ace_after_register_post_type', array( __CLASS__, 'maybe_flush_rewrite_rules' ) );
+		add_action( 'init', array( __CLASS__, 'register_post_status' ), 30 );
+		//		add_action( 'wc_ace_after_register_post_type', array( __CLASS__, 'maybe_flush_rewrite_rules' ) );
 		add_action( 'wc_ace_flush_rewrite_rules', array( __CLASS__, 'flush_rewrite_rules' ) );
 	}
 
@@ -83,7 +83,11 @@ class WC_Ace_Post_Types {
 	 * Register Core post status.
 	 */
 	public static function register_post_status() {
-		do_action( 'wc_ace_support_post_status' );
+		foreach ( wc_ace_gift_statuses() as $order_status => $values ) {
+			register_post_status( $order_status, $values );
+		}
+
+		do_action( 'wc_ace_register_support_post_status' );
 	}
 
 	/**

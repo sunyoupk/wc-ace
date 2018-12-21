@@ -98,7 +98,7 @@ jQuery( function ( $ ) {
                 success: function ( result ) {
                     try {
                         if ( 'success' === result.result ) {
-                            // Reload the page if requested
+                            // Reload the page if requested.
                             if ( true === result.reload ) {
                                 window.location.reload();
                                 return;
@@ -131,7 +131,6 @@ jQuery( function ( $ ) {
                 error: function ( jqXHR, textStatus, errorThrown ) {
                     wc_ace_gift_recipient_check.submit_error( '<div class="woocommerce-error">' + errorThrown + '</div>' );
                 }
-
             } );
 
             return false;
@@ -157,7 +156,6 @@ jQuery( function ( $ ) {
 
     };
 
-
-    wc_ace_recipient_auth_check.init();
+    wc_ace_gift_recipient_check.init();
 
 } );

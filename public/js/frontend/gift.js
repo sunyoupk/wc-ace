@@ -15,9 +15,13 @@ jQuery( function ( $ ) {
         xhr: false,
         $order_review: $( '#order_review' ),
         $gift_form: $( 'form.wc_ace_shipping_form' ),
-        init: function () {
 
+        init: function () {
             this.shipping_address_form_required();
+
+            // Postcode search
+            if ( wc_ace_gift_params.is_editable )  this.append_search_postcode();
+            this.$gift_form.on( 'click', '.btn-search-postcode', this.search_postcode );
 
             // Form submission
             this.$gift_form.on( 'submit', this.submit );
@@ -111,14 +115,15 @@ jQuery( function ( $ ) {
             var data = {
                 security: wc_ace_gift_params.gift_update_shipping_address_nonce,
                 order_id: wc_ace_gift_params.order_id,
-                is_gift: wc_ace_gift_params.is_gift,
+                is_recipient: wc_ace_gift_params.is_gift,
+                is_gift: $( '#ship-to-different-address' ).find( 'input' ).is( ':checked' ) || wc_ace_gift_params.is_gift,
                 shipping_first_name: $( 'input#shipping_first_name' ).val(),
                 shipping_phone: $( 'input#shipping_phone' ).val(),
                 shipping_postcode: $( 'input#shipping_postcode' ).val(),
                 shipping_address_1: $( 'input#shipping_address_1' ).val(),
                 shipping_address_2: $( 'input#shipping_address_2' ).val(),
-                shipping_address_method: $form.find( '#ship-to-different-address' ).is( ':checked' ) ? $form.find( 'input[name="shipping_address_method"]:checked' ).val() : '',
-                has_full_address: has_full_address,
+                shipping_address_method: $( '#ship-to-different-address' ).find( 'input' ).is( ':checked' ) ? $form.find( 'input[name="shipping_address_method"]:checked' ).val() : '',
+                has_full_address: has_full_address
             };
 
             $.ajax( {
@@ -183,6 +188,31 @@ jQuery( function ( $ ) {
                 scrollElement = $( '.form.checkout' );
             }
             $.scroll_to_notices( scrollElement );
+        },
+
+        append_search_postcode: function() {
+            $( '#billing_address_1_field > label' ).append(
+                '<a data-type="billing" class="btn-search-postcode" style="cursor:pointer;"><i class="fa fa-search"></i></a>'
+            );
+            $( '#shipping_address_1_field > label' ).append(
+                '<a data-type="shipping" class="btn-search-postcode" style="cursor:pointer;"><i class="fa fa-search"></i></a>'
+            );
+        },
+
+        search_postcode: function () {
+            var type = $( this ).data( 'type' );
+            new daum.Postcode( {
+                oncomplete: function ( data ) {
+                    if ( wc_ace_gift_params.postcode_digit == '5' ) {
+                        $( '#' + type + '_postcode' ).val( data.zonecode );
+                    } else {
+                        $( '#' + type + '_postcode' ).val( data.postcode );
+                    }
+                    $( '#' + type + '_address_1' ).val( data.address );
+
+                    $( '#' + type + '_address_2' ).focus();
+                }
+            } ).open();
         }
 
     };

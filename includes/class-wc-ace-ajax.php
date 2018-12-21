@@ -83,7 +83,6 @@ class WC_Ace_Ajax {
 		}
 	}
 
-
 	/**
 	 * Hook in methods - uses WordPress ajax handlers (admin-ajax).
 	 */
@@ -91,6 +90,7 @@ class WC_Ace_Ajax {
 		// wc_ace_EVENT => nopriv.
 		$ajax_events = array(
 			'gift_update_shipping_address' => true,
+			'gift_recipient_check'         => true,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -114,8 +114,10 @@ class WC_Ace_Ajax {
 		wc_maybe_define_constant( 'WC_ACE_GIFT', true );
 
 		try {
-			$order_id = absint( $_POST['order_id'] );
-			$order    = wc_get_order( $order_id );
+			$order_id     = absint( $_POST['order_id'] );
+			$order        = wc_get_order( $order_id );
+			$is_recipient = isset( $_POST['is_recipient'] ) ? $_POST['is_recipient'] : 0 ;
+			$is_gift      = isset( $_POST['is_gift'] ) ? $_POST['is_gift'] : 0;
 
 			if ( ! $order ) {
 				throw new exception( __( 'Invalid order', 'wc-ace' ) );
@@ -128,7 +130,7 @@ class WC_Ace_Ajax {
 			) );
 
 			// Must check fields from Gift page.
-			if ( absint( $_POST['is_gift'] ) != 1 && in_array( $_POST['shipping_address_method'], array(
+			if ( ! $is_recipient && isset( $_POST['shipping_address_method'] ) && in_array( $_POST['shipping_address_method'], array(
 					'sms',
 					'kakao'
 				) ) ) {
@@ -154,6 +156,14 @@ class WC_Ace_Ajax {
 				) );
 				$order->update_meta_data( '_shipping_phone', isset( $_POST['shipping_phone'] ) ? wp_unslash( $_POST['shipping_phone'] ) : null );
 				$order->update_meta_data( '_shipping_address_method', isset( $_POST['shipping_address_method'] ) ? wp_unslash( $_POST['shipping_address_method'] ) : null );
+				$order->update_meta_data( '_is_gift', wc_bool_to_string( $is_gift ) );
+				// is_gift variable is true then recipient request gift.
+
+				// Change the status after saving the address.
+				if ( $is_recipient ) {
+					//error_log( 'Change status' );
+					$order->set_status( 'gift-requested' );
+				}
 				$order->save();
 			}
 
@@ -185,7 +195,7 @@ class WC_Ace_Ajax {
 			}
 
 			$required_fields = array(
-				// todo namespace 휴대전화번호
+				// todo-namespace 휴대전화번호
 				'recipient_phone' => __( '휴대전화번호', 'wc-ace' ),
 			);
 
@@ -201,8 +211,19 @@ class WC_Ace_Ajax {
 
 			if ( empty( $messages ) ) {
 				$order_shipping_phone = esc_html( $order->get_meta( '_shipping_phone' ) );
-				$recipient_phone = isset( $_POST['recipient_phone'] ) ? wp_unslash( $_POST['recipient_phone'] ) : null;
+				$recipient_phone      = isset( $_POST['recipient_phone'] ) ? wp_unslash( $_POST['recipient_phone'] ) : null;
 
+				if ( $order_shipping_phone == $recipient_phone ) {
+					// Set transient authenticated recipient.
+					set_transient( 'gift_recipient_auth_' . $order_id, true, DAY_IN_SECONDS );
+
+				} else {
+					ob_start();
+					// todo-namespace
+					wc_add_notice( sprintf( __( '입력하신 %s 은(는) 선물 수령인의 휴대전화 번호와 일치하지 않습니다.', 'wc-ace' ), '<strong>' . esc_html( $recipient_phone ) . '</strong>' ), 'error' );
+					wc_print_notices();
+					$messages = ob_get_clean();
+				}
 			}
 
 			wp_send_json(
