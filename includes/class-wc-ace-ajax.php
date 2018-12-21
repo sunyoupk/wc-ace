@@ -31,7 +31,7 @@ class WC_Ace_Ajax {
 		return esc_url_raw( apply_filters( 'wc_ace_ajax_get_endpoint', add_query_arg( 'wc-ace-ajax', $request, remove_query_arg( array(
 			'remove_item',
 			'add-to-cart',
-			'added-to-cart'
+			'added-to-cart',
 		), home_url( '/', 'relative' ) ) ), $request ) );
 	}
 
@@ -107,16 +107,17 @@ class WC_Ace_Ajax {
 
 	/**
 	 * Shipping address update(from gift).
+	 * @throws Exception
+	 *
 	 */
 	public static function gift_update_shipping_address() {
 		check_ajax_referer( 'gift-update-shipping-address', 'security' );
-
 		wc_maybe_define_constant( 'WC_ACE_GIFT', true );
 
 		try {
 			$order_id     = absint( $_POST['order_id'] );
 			$order        = wc_get_order( $order_id );
-			$is_recipient = isset( $_POST['is_recipient'] ) ? $_POST['is_recipient'] : 0 ;
+			$is_recipient = isset( $_POST['is_recipient'] ) ? $_POST['is_recipient'] : 0;
 			$is_gift      = isset( $_POST['is_gift'] ) ? $_POST['is_gift'] : 0;
 
 			if ( ! $order ) {
@@ -132,7 +133,7 @@ class WC_Ace_Ajax {
 			// Must check fields from Gift page.
 			if ( ! $is_recipient && isset( $_POST['shipping_address_method'] ) && in_array( $_POST['shipping_address_method'], array(
 					'sms',
-					'kakao'
+					'kakao',
 				) ) ) {
 				unset( $required_fields['shipping_address_1'] );
 			}
@@ -161,7 +162,6 @@ class WC_Ace_Ajax {
 
 				// Change the status after saving the address.
 				if ( $is_recipient ) {
-					//error_log( 'Change status' );
 					$order->set_status( 'gift-requested' );
 				}
 				$order->save();
@@ -194,8 +194,8 @@ class WC_Ace_Ajax {
 				throw new exception( __( 'Invalid order', 'wc-ace' ) );
 			}
 
+			// todo-namespace 휴대전화번호
 			$required_fields = array(
-				// todo-namespace 휴대전화번호
 				'recipient_phone' => __( '휴대전화번호', 'wc-ace' ),
 			);
 
