@@ -166,6 +166,10 @@ if ( ! function_exists( 'wc_ace_gift_statuses' ) ) {
 }
 
 if ( ! function_exists( 'wc_ace_gift_message_api' ) ) {
+	/**
+	 * 상품 선물에 대한 방법을 조회합니다.
+	 * @return array
+	 */
 	function wc_ace_gift_message_api() {
 		return array(
 			'direct' => array(
