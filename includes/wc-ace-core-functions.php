@@ -200,4 +200,27 @@ if ( ! function_exists( 'wc_ace_gift_message_api' ) ) {
 	}
 }
 
+if ( ! function_exists( 'current_order_id' ) ) {
+	/**
+	 * Return true when viewing the gift page.
+	 *
+	 * @return bool
+	 */
+	function current_order_id() {
+		global $wp;
+		$order_id = 0;
 
+		if ( isset( $wp->query_vars['pagename'] ) ) {
+			$pagename = $wp->query_vars['pagename'];
+
+			if ( $wp->query_vars['pagename'] == 'gift' && isset( $wp->query_vars['page'] ) && $wp->query_vars['page'] != 0 ) {
+				$order_id = $wp->query_vars['page'];
+
+			} else if ( $wp->query_vars['pagename'] == 'my-account' && isset( $wp->query_vars['view-order'] ) && $wp->query_vars['view-order'] != 0 ) {
+				$order_id = $wp->query_vars['view-order'];
+			}
+		}
+
+		return $order_id;
+	}
+}

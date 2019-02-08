@@ -11,22 +11,142 @@ jQuery( function ( $ ) {
     var wc_ace_gift_form = {
         updateTimer: false,
         dirtyInput: false,
+        selectedShippingAddressMethod: false,
         selectedPaymentMethod: false,
         xhr: false,
         $order_review: $( '#order_review' ),
-        $gift_form: $( 'form.wc_ace_shipping_form' ),
+        $ace_form: ( wc_ace_gift_params.is_checkout == 1 ) ? $( 'form.checkout' ) : $( 'form.wc_ace_shipping_form' ),
 
         init: function () {
             this.shipping_address_form_required();
 
-            // Postcode search
-            if ( wc_ace_gift_params.is_editable )  this.append_search_postcode();
-            this.$gift_form.on( 'click', '.btn-search-postcode', this.search_postcode );
+            this.$ace_form.on( 'click', 'input[name="shipping_address_method"]', this.shipping_address_method_selected );
 
-            // Form submission
-            this.$gift_form.on( 'submit', this.submit );
+            this.$ace_form.on( 'change', '#ship-to-different-address input', this.ship_to_different_address );
 
-            this.$gift_form.on( 'input validate change', '.input-text, select, input:checkbox', this.validate_field );
+            if ( wc_ace_gift_params.is_editable || wc_ace_gift_params.is_checkout ) this.append_search_postcode();
+            this.$ace_form.on( 'click', '.btn-search-postcode', this.search_postcode );
+
+            this.$ace_form.on( 'submit', this.submit );
+
+            this.$ace_form.on( 'input validate change', '.input-text, select, input:checkbox', this.validate_field );
+
+            // this.$ace_form.find( '#ship-to-different-address input' ).change();
+
+            this.init_shipping_address_methods();
+        },
+
+        init_shipping_address_methods: function () {
+            var $shipping_address_methods = this.$ace_form.find( 'input[name="shipping_address_method"]' );
+
+            // If there is one method, we can hide the radio input
+            if ( 1 === $shipping_address_methods.length ) {
+                $shipping_address_methods.eq( 0 ).hide();
+            }
+
+            // If there was a previously selected method, check that one.
+            if ( wc_ace_gift_form.selectedShippingAddressMethod ) {
+                $( '#' + wc_ace_gift_form.selectedShippingAddressMethod ).prop( 'checked', true );
+            }
+
+            // If there are none selected, select the first.
+            if ( 0 === $shipping_address_methods.filter( ':checked' ).length ) {
+                $shipping_address_methods.eq( 0 ).prop( 'checked', true );
+            }
+
+            if ( $shipping_address_methods.length > 1 ) {
+                // Hide open descriptions.
+                $( 'div.shipping_address_box' ).filter( ':visible' ).slideUp( 0 );
+            }
+
+            // Trigger click event for selected method
+            $shipping_address_methods.filter( ':checked' ).eq( 0 ).trigger( 'click' );
+        },
+
+        ship_to_different_address: function () {
+            $( 'div.shipping-address-method-fields' ).hide();
+            var is_checked = $( this ).is( ':checked' );
+            if ( is_checked ) {
+                $( 'div.shipping-address-method-fields' ).slideDown();
+            }
+
+            $( '.woocommerce-billing-fields' ).find( 'p.address-field' ).each( function ( i, field ) {
+                if ( is_checked ) {
+                    // Hide billing address fields.
+                    $( field ).filter( ':visible' ).slideUp( 0 );
+                    $( field ).removeClass( 'validate-required' );
+                } else {
+                    $( field ).slideDown( 230 );
+                    $( field ).addClass( 'validate-required' );
+                    if ( $( field ).find( 'label .required' ).length === 0 ) {
+                        // todo 필수 translate or parameter required!
+                        $( field ).find( 'label' ).append( '<abbr class="required" title="' + '필수' + '">*</abbr>' );
+                    }
+                }
+                $( field ).find( 'label .optional' ).hide();
+            } );
+        },
+
+        shipping_address_method_selected: function ( e ) {
+            e.stopPropagation();
+
+            if ( $( '.shipping_address_methods input.input-radio' ).length > 1 ) {
+                var target_shipping_address_box = $( 'div.shipping_address_box.' + $( this ).attr( 'ID' ) ),
+                    is_checked = $( this ).is( ':checked' );
+
+                if ( is_checked && !target_shipping_address_box.is( ':visible' ) ) {
+                    $( 'div.shipping_address_box' ).filter( ':visible' ).slideUp( 230 );
+
+                    if ( is_checked ) {
+                        target_shipping_address_box.slideDown( 230 );
+                    }
+                }
+            } else {
+                $( 'div.shipping_address_box' ).show();
+            }
+
+            // Show shipping address fields(only direct).
+            var selected_value = $( this ).val();
+            if ( selected_value === 'email' ) {
+                var $field = $( 'p#shipping_email_field' );
+                $field.addClass( 'validate-required' );
+                if ( $field.find( 'label .required' ).length === 0 ) {
+                    // todo-namepace 필수
+                    $field.find( 'label' ).append( '<abbr class="required" title="' + '필수' + '">*</abbr>' );
+                    $field.find( 'label .optional' ).hide();
+                }
+
+            } else {
+                var $field = $( 'p#shipping_email_field' );
+                $field.removeClass( 'validate-required' );
+                $field.find( 'label .optional' ).show();
+                $field.find( 'label .required' ).remove();
+
+                $( '.shipping_address' ).find( 'p.address-field' ).each( function ( i, field ) {
+                    if ( selected_value === 'direct' ) {
+                        $( field ).slideDown( 230 );
+                        $( field ).addClass( 'validate-required' );
+                        if ( $( field ).find( 'label .required' ).length === 0 ) {
+                            $( field ).find( 'label' ).append( '<abbr class="required" title="' + '필수' + '">*</abbr>' );
+                        }
+
+                    } else {
+                        if ( wc_ace_gift_params.is_checkout == 1 ) {
+                            $( field ).filter( ':visible' ).slideUp( 0 );
+                        }
+                        $( field ).removeClass( 'validate-required' );
+                    }
+                    $( field ).find( 'label .optional' ).hide();
+                } );
+            }
+
+            var selectedShippingAddressMethod = $( '.woocommerce-checkout input[name="shipping_address_method"]:checked' ).attr( 'id' );
+
+            if ( selectedShippingAddressMethod !== wc_ace_gift_form.selectedShippingAddressMethod ) {
+                $( document.body ).trigger( 'shipping_address_method_selected' );
+            }
+
+            wc_ace_gift_form.selectedShippingAddressMethod = selectedShippingAddressMethod;
         },
 
         shipping_address_form_required: function () {
@@ -101,7 +221,7 @@ jQuery( function ( $ ) {
                 }
             } );
 
-            var $required_inputs = $( wc_ace_gift_form.$gift_form ).find( '.address-field.validate-required:visible' ),
+            var $required_inputs = $( wc_ace_gift_form.$ace_form ).find( '.address-field.validate-required:visible' ),
                 has_full_address = true;
 
             if ( $required_inputs.length ) {
@@ -174,9 +294,9 @@ jQuery( function ( $ ) {
 
         submit_error: function ( error_message ) {
             $( '.woocommerce-NoticeGroup-gift, .woocommerce-error, .woocommerce-message' ).remove();
-            wc_ace_gift_form.$gift_form.prepend( '<div class="woocommerce-NoticeGroup woocommerce-NoticeGroup-gift">' + error_message + '</div>' );
-            wc_ace_gift_form.$gift_form.removeClass( 'processing' ).unblock();
-            wc_ace_gift_form.$gift_form.find( '.input-text, select, input:checkbox' ).trigger( 'validate' ).blur();
+            wc_ace_gift_form.$ace_form.prepend( '<div class="woocommerce-NoticeGroup woocommerce-NoticeGroup-gift">' + error_message + '</div>' );
+            wc_ace_gift_form.$ace_form.removeClass( 'processing' ).unblock();
+            wc_ace_gift_form.$ace_form.find( '.input-text, select, input:checkbox' ).trigger( 'validate' ).blur();
             wc_ace_gift_form.scroll_to_notices();
             $( document.body ).trigger( 'gift_error' );
         },
@@ -218,10 +338,10 @@ jQuery( function ( $ ) {
     };
 
     var kakao_api = {
-        $gift_form: $( 'form.gift' ),
+        $ace_form: $( 'form.gift' ),
         init: function () {
             Kakao.init( '68dc5c89516e337ab29f7589d679f850' );
-            this.$gift_form.on( 'click', '#btn_send_kakao', this.send_shipping_address_form );
+            this.$ace_form.on( 'click', '#btn_send_kakao', this.send_shipping_address_form );
         },
 
         send_shipping_address_form: function () {

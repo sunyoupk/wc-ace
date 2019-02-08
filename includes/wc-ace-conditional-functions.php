@@ -8,13 +8,13 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( ! function_exists( 'is_gift' ) ) {
+if ( ! function_exists( 'is_gift_age' ) ) {
 	/**
-	 * Is_gift - Returns true when viewing the gift page.
+	 * Return true when viewing the gift page.
 	 *
 	 * @return bool
 	 */
-	function is_gift() {
+	function is_gift_page() {
 		$page_id = wc_ace_get_page_id( 'gift' );
 
 		return ( $page_id && is_page( $page_id ) ) || wc_post_content_has_shortcode( 'wc_ace_gift' ) || apply_filters( 'wc_ace_is_gift', false ) || defined( 'WC_ACE_GIFT' );

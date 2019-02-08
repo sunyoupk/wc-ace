@@ -225,16 +225,15 @@ class WC_Ace_Frontend_Scripts {
 		self::register_scripts();
 		self::register_styles();
 
-
-		if ( is_view_order_page() ) {
+		if ( is_checkout() || is_view_order_page() ) {
 			self::enqueue_script( 'wc-ace-gift' );
 		}
 
-		if ( is_checkout() || is_view_order_page() ) {
+		if ( is_checkout() ) {
 			self::enqueue_script( 'wc-ace-checkout' );
 		}
 
-		if ( is_gift() ) {
+		if ( is_gift_page() ) {
 			self::enqueue_script( 'wc-ace-gift' );
 			self::enqueue_script( 'wc-ace-gift-recipient' );
 		}
@@ -304,12 +303,16 @@ class WC_Ace_Frontend_Scripts {
 				);
 				break;
 			case 'wc-ace-gift':
+				if ( ! is_a( $theorder, 'WC_Order' ) ) {
+					$theorder = wc_get_order( current_order_id() );
+				}
 				$params = array(
 					'ajax_url'                           => wc_ace()->ajax_url(),
 					'wc_ace_ajax_url'                    => WC_Ace_AJAX::get_endpoint( '%%endpoint%%' ),
 					'gift_update_shipping_address_nonce' => wp_create_nonce( 'gift-update-shipping-address' ),
 					'gift_url'                           => WC_Ace_AJAX::get_endpoint( 'gift' ),
 					'is_gift'                            => is_page( wc_ace_get_page_id( 'gift' ) ) && empty( $wp->query_vars['gift'] ) && ! isset( $wp->query_vars['gift-received'] ) ? 1 : 0,
+					'is_checkout'                        => is_page( wc_get_page_id( 'checkout' ) ) && empty( $wp->query_vars['order-pay'] ) && ! isset( $wp->query_vars['order-received'] ) ? 1 : 0,
 					'is_editable'                        => is_a( $theorder, 'WC_Order' ) ? in_array( $theorder->get_status(), array(
 						'on-hold',
 						'gift-addressing'

@@ -31,7 +31,7 @@ class WC_Ace_Shortcode_Gift {
 		$order_id = empty( $order_id ) ? 0 : ltrim( wc_clean( wp_unslash( $order_id ) ), '#' );
 		$order = wc_get_order( $order_id );
 
-		if ( $order && $order->get_id() ) {
+		if ( $order && $order->get_id() &&  $order->get_meta( '_is_gift' ) == 'yes' ) {
 			if ( false === ( $recipient_auth_transient = get_transient( 'gift_recipient_auth_' . $order_id ) ) ) {
 				wc_ace_get_template(
 					'gift/recipient-check.php', array(

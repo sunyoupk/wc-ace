@@ -31,13 +31,11 @@ if ( ! function_exists( 'wc_ace_order_and_gift_statuses' ) ) {
 		}
 		return $new_order_statuses;
 	}
-
 }
 
 if ( ! function_exists( 'wc_ace_checkout_update_order_meta' ) ) {
-
 	/**
-	 *  Order 메타데이터 생성 후 처리
+	 *  Order 메타데이터 생성 후 처리.
 	 *
 	 * @param $order_id
 	 * @param $data
@@ -49,5 +47,4 @@ if ( ! function_exists( 'wc_ace_checkout_update_order_meta' ) ) {
 			update_post_meta( $order_id, '_is_gift', 'no' );
 		}
 	}
-
 }
