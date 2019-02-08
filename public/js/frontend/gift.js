@@ -96,7 +96,6 @@ jQuery( function ( $ ) {
 
                 if ( is_checked && !target_shipping_address_box.is( ':visible' ) ) {
                     $( 'div.shipping_address_box' ).filter( ':visible' ).slideUp( 230 );
-
                     if ( is_checked ) {
                         target_shipping_address_box.slideDown( 230 );
                     }
@@ -107,38 +106,35 @@ jQuery( function ( $ ) {
 
             // Show shipping address fields(only direct).
             var selected_value = $( this ).val();
+            var $field = $( 'p#shipping_email_field' );
             if ( selected_value === 'email' ) {
-                var $field = $( 'p#shipping_email_field' );
                 $field.addClass( 'validate-required' );
                 if ( $field.find( 'label .required' ).length === 0 ) {
-                    // todo-namepace 필수
                     $field.find( 'label' ).append( '<abbr class="required" title="' + '필수' + '">*</abbr>' );
                     $field.find( 'label .optional' ).hide();
                 }
-
             } else {
-                var $field = $( 'p#shipping_email_field' );
                 $field.removeClass( 'validate-required' );
                 $field.find( 'label .optional' ).show();
                 $field.find( 'label .required' ).remove();
-
-                $( '.shipping_address' ).find( 'p.address-field' ).each( function ( i, field ) {
-                    if ( selected_value === 'direct' ) {
-                        $( field ).slideDown( 230 );
-                        $( field ).addClass( 'validate-required' );
-                        if ( $( field ).find( 'label .required' ).length === 0 ) {
-                            $( field ).find( 'label' ).append( '<abbr class="required" title="' + '필수' + '">*</abbr>' );
-                        }
-
-                    } else {
-                        if ( wc_ace_gift_params.is_checkout == 1 ) {
-                            $( field ).filter( ':visible' ).slideUp( 0 );
-                        }
-                        $( field ).removeClass( 'validate-required' );
-                    }
-                    $( field ).find( 'label .optional' ).hide();
-                } );
             }
+
+            $( '.shipping_address' ).find( 'p.address-field' ).each( function ( i, field ) {
+                if ( selected_value === 'direct' ) {
+                    $( field ).slideDown( 230 );
+                    $( field ).addClass( 'validate-required' );
+                    if ( $( field ).find( 'label .required' ).length === 0 ) {
+                        $( field ).find( 'label' ).append( '<abbr class="required" title="' + '필수' + '">*</abbr>' );
+                    }
+
+                } else {
+                    if ( wc_ace_gift_params.is_checkout == 1 ) {
+                        $( field ).filter( ':visible' ).slideUp( 0 );
+                    }
+                    $( field ).removeClass( 'validate-required' );
+                }
+                $( field ).find( 'label .optional' ).hide();
+            } );
 
             var selectedShippingAddressMethod = $( '.woocommerce-checkout input[name="shipping_address_method"]:checked' ).attr( 'id' );
 
