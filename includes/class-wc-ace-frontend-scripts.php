@@ -1,12 +1,5 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: ace
- * Date: 24/07/2018
- * Time: 10:24 AM
- */
-
-/**
  * Class WC_Ace_Frontend_Scripts
  */
 class WC_Ace_Frontend_Scripts {
